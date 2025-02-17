@@ -1,4 +1,4 @@
-# Breaking the Black-Box: Confidence-Guided Model Inversion Attack for Distribution Shift
+# Enhancing Model Inversion Attacks Against Deep Neural Networks in Black-Box Settings
 
 <div style="display: flex; flex-direction: row; align-items: center;">
 
