@@ -1,0 +1,62 @@
+---
+target_model:
+  architecture: resnet18 # architecture of target model
+  num_classes: 530 # number of output neurons
+  weights: ./results/resnet18_facescrub/resnet18_facescrub.pt # link to weight file
+#  weights: ./results/resnet152_facescrub/resnet152_facescrub.pt # link to weight file
+#  weights: ./results/densenet169_facescrub/densenet169_facescrub.pt # link to weight file
+evaluation_model:
+  architecture: inception-v3 # architecture of evaluation model
+  num_classes: 530 # number of output neurons
+  weights: ./results/InceptionV3_facescrub/inception_v3_facescrub.pt # link to weight file
+
+stylegan_model: ./Stylegan2_weight/metfaces.pkl
+seed: 42 # Seed used for splitting the datasets and initialize the attack.
+dataset: facescrub # Target dataset, select one of [facescrub, celeba_identities, stanford_dogs_cropped, stanford_dogs_uncropped].
+
+attack:
+  candidates:
+    candidate_search:
+      search_space_size: 4000 #5000 # Set of randomly sampled latent vector, from which the candidates are selected.
+      center_crop: 800 # Crop generated images.
+      resize: 224 # Resize generated images (after cropping).
+      horizontal_flip: true # Flip the generated images horizontally in 50% of the cases.
+      batch_size: 10 # Batch size during the sampling process (single GPU).
+      truncation_psi: 0.5 # Truncation psi for StyleGAN.
+      truncation_cutoff: 8 # Truncation cutoff for StyleGAN.
+
+  num_targets: 100 #[0,1,2,3,4,5,6,7,8,9] #300 # Specify the attack targeted class with a list of indices[x,x..], or the attack total class numbers with integer.
+  clip: false # Clip generated images in range [-1, 1].
+
+  transformations: # Transformations applied during the optimization.
+    CenterCrop:
+      size: 800
+    Resize:
+      size: 224
+    RandomResizedCrop:
+      size: [224, 224]
+      scale: [0.9, 1.0]
+      ratio: [1.0, 1.0]
+  confidence_matching_loss: poincare #cross_entropy or poincare or max_margin
+  optimizer: CMA #BO or CMA
+  num_workers: 4
+
+  CMA:
+    iters: 8
+    epochs: 300
+    number_samples: 25
+    num_select: 50
+  BO:
+    iters: 8
+    n_init: 256
+    max_evals: 3000
+    batch_size: 64
+    number_samples: 25
+    num_select: 50
+
+
+wandb: # Options for WandB logging.
+  enable_logging: true # Activate logging.
+  wandb_init_args: # WandB init arguments.
+    project: model_inversion_attacks
+    name: CG_MI
