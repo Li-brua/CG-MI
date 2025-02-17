@@ -17,7 +17,7 @@
 
 ## Model Inversion Attacks
   <center>
-  <img src="images/overview.png" alt="Attack Pipeline"  height=>
+  <img src="images/overview1.png" alt="Attack Pipeline"  height=>
   </center>
 
 Privacy protection and attacks have been extensively studied, attracting significant attention within the scientific community. Model inversion attacks (MIAs) represent a class of attacks aimed at compromising the privacy protection of models. MIAs target the retrieval of sensitive information about the model’s training data by leveraging known model outputs, thus putting user privacy at risk. For instance, an attacker may query the output of a facial recognition model and, upon successful exploitation, generate synthetic images that reflect the user’s facial features, thereby violating user privacy.
